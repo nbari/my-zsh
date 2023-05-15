@@ -19,6 +19,43 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # ----------------------------------------------------------------------------
+# Aliases
+# ----------------------------------------------------------------------------
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
+alias d='dirs -v | head -10'
+alias connected='lsof -i | grep -E "(LISTEN|ESTABLISHED)"'
+alias listen='lsof -iTCP -sTCP:LISTEN -n -P' 
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
+alias ssh="TERM=xterm-256color ssh"
+
+if type exa 2>&1 >/dev/null; then
+  alias ls='exa'
+  alias l='exa -l --all --group-directories-first --git'
+  alias ll='exa -l --all --all --group-directories-first --git'
+  alias lt='exa --icons -T --git-ignore --level=2 --group-directories-first'
+  alias llt='exa --icons -lT --git-ignore --level=2 --group-directories-first'
+  alias lT='exa --icons -T --git-ignore --level=4 --group-directories-first'
+else
+  alias l='ls -lah'
+  alias ll='ls -alF'
+  alias la='ls -A'
+fi
+
+# ----------------------------------------------------------------------------
 # vim mode
 # ----------------------------------------------------------------------------
 bindkey -v
@@ -101,27 +138,6 @@ zstyle ":completion:*:commands" rehash 1
 # ls colors
 zstyle ':completion:*' list-colors 'di=94:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
-
-# ----------------------------------------------------------------------------
-# alias for directories
-# ----------------------------------------------------------------------------
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
-alias -g ......='../../../../..'
-alias 1='cd -'
-alias 2='cd -2'
-alias 3='cd -3'
-alias 4='cd -4'
-alias 5='cd -5'
-alias 6='cd -6'
-alias 7='cd -7'
-alias 8='cd -8'
-alias 9='cd -9'
-alias d='dirs -v | head -10'
-alias connected='lsof -i | grep -E "(LISTEN|ESTABLISHED)"'
-alias listen='lsof -iTCP -sTCP:LISTEN -n -P' 
-
 # ----------------------------------------------------------------------------
 # prompt
 # ----------------------------------------------------------------------------
@@ -165,26 +181,3 @@ function slick_prompt_precmd() {
 function slick_prompt_preexec() {
     slick_prompt_timestamp=$EPOCHSECONDS
 }
-
-
-# ----------------------------------------------------------------------------
-# Aliases
-# ----------------------------------------------------------------------------
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
-
-if type exa 2>&1 >/dev/null; then
-  alias ls='exa'
-  alias l='exa -l --all --group-directories-first --git'
-  alias ll='exa -l --all --all --group-directories-first --git'
-  alias lt='exa --icons -T --git-ignore --level=2 --group-directories-first'
-  alias llt='exa --icons -lT --git-ignore --level=2 --group-directories-first'
-  alias lT='exa --icons -T --git-ignore --level=4 --group-directories-first'
-else
-  alias l='ls -lah'
-  alias ll='ls -alF'
-  alias la='ls -A'
-fi
-
-alias ssh="TERM=xterm-256color ssh"
