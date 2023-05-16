@@ -329,8 +329,6 @@ if hash tmux &> /dev/null; then
     fi
 fi
 
-eval "$(direnv hook zsh)"
-
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
 # --hidden: Search hidden files and folders
@@ -347,3 +345,7 @@ fh() {
 }
 
 
+# ----------------------------------------------------------------------------
+# direnv
+# ----------------------------------------------------------------------------
+eval "$(direnv hook zsh)"
