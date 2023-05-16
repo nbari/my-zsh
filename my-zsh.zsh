@@ -30,7 +30,7 @@ alias active='grep -Ev "^($|#)"'
 alias assh='autossh -M 0'
 alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
 alias c='clear'
-alias cat='batcat'
+alias bat='batcat'
 alias connected='lsof -i | grep -E "(LISTEN|ESTABLISHED)"'
 alias cp='cp -i'
 alias cpr='rsync --delete --archive --numeric-ids --human-readable --verbose --info=progress2'
