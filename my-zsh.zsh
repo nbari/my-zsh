@@ -1,7 +1,6 @@
 # ----------------------------------------------------------------------------
 # variables
 # ----------------------------------------------------------------------------
-export PATH="$PATH:$HOME/projects/go/bin:$HOME/.cargo/bin:$HOME/.local/bin:/snap/bin"
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 export CLICOLOR=1
 export LC_ALL=en_US.UTF-8
@@ -10,13 +9,6 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 export EDITOR=vim
 export LESSCHARSET=utf-8
 export PAGER='less -R'
-
-# ----------------------------------------------------------------------------
-# PYENV - curl https://pyenv.run | bash
-# ----------------------------------------------------------------------------
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
 # ----------------------------------------------------------------------------
 # Aliases
@@ -343,9 +335,3 @@ source /usr/share/doc/fzf/examples/completion.zsh
 fh() {
     print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
-
-
-# ----------------------------------------------------------------------------
-# direnv
-# ----------------------------------------------------------------------------
-eval "$(direnv hook zsh)"
