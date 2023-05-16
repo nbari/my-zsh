@@ -1,14 +1,14 @@
 # ----------------------------------------------------------------------------
 # variables
 # ----------------------------------------------------------------------------
-export SSH_AUTH_SOCK=~/.1password/agent.sock
 export CLICOLOR=1
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LSCOLORS=Exfxcxdxbxegedabagacad
 export EDITOR=vim
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export LESSCHARSET=utf-8
+export LSCOLORS=Exfxcxdxbxegedabagacad
 export PAGER='less -R'
+export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 # ----------------------------------------------------------------------------
 # Aliases
@@ -94,7 +94,7 @@ bindkey -M vicmd 'j' down-line-or-beginning-search # Down
 # ----------------------------------------------------------------------------
 # use OS time
 # ----------------------------------------------------------------------------
-# disable -r time
+disable -r time
 
 # ----------------------------------------------------------------------------
 # magic-space
