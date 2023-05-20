@@ -38,9 +38,9 @@ alias d='dirs -v | head -10'
 alias dev='git checkout develop'
 alias gd="echo main diff:; git diff --name-status main develop"
 alias gl="git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset'"
-alias h='history' 
+alias h='history'
 alias less='less -FSRX'
-alias listen='lsof -iTCP -sTCP:LISTEN -n -P' 
+alias listen='lsof -iTCP -sTCP:LISTEN -n -P'
 alias main='git checkout main'
 alias master='git checkout master'
 alias mv='mv -i'
@@ -59,6 +59,7 @@ alias tl='tmux list-sessions'
 alias tmp='cd ~/tmp'
 alias up='git add . && git commit -a -m "sync `date`" && git push'
 alias up='git add . && git commit -am "sync $(date)" && git push'
+alias yk='gpg --card-status > /dev/null'
 
 if type exa 2>&1 >/dev/null; then
   alias ls='exa'
