@@ -238,6 +238,9 @@ function slick_prompt_preexec() {
     slick_prompt_timestamp=$EPOCHSECONDS
 }
 
+export SLICK_PROMPT_GIT_REMOTE_BEHIND=""
+export SLICK_PROMPT_GIT_REMOTE_AHEAD=""
+
 
 # ----------------------------------------------------------------------------
 # custom
