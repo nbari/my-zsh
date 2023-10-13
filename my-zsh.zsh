@@ -27,7 +27,6 @@ alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
 alias active='grep -Ev "^($|#)"'
-alias assh='autossh -M 0'
 alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
 alias c='clear'
 alias bat='batcat'
@@ -195,7 +194,7 @@ zstyle ":completion:*:commands" rehash 1
 zstyle ':completion:*' list-colors 'di=94:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
 # ----------------------------------------------------------------------------
-# prompt
+# prompt slick
 # ----------------------------------------------------------------------------
 zle -N zle-keymap-select
 zle -N zle-line-init
@@ -331,17 +330,21 @@ if hash tmux &> /dev/null; then
     fi
 fi
 
+# ----------------------------------------------------------------------------
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
 # --hidden: Search hidden files and folders
 # --follow: Follow symlinks
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+# ----------------------------------------------------------------------------
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 export FZF_TMUX=1
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 
+# ----------------------------------------------------------------------------
 # command history
+# ----------------------------------------------------------------------------
 fh() {
     print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
