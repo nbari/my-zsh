@@ -59,6 +59,7 @@ alias tmp='cd ~/tmp'
 alias up='git add . && git commit -a -m "sync `date`" && git push'
 alias up='git add . && git commit -am "sync $(date)" && git push'
 alias yk='gpg --card-status > /dev/null'
+alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::restriction -W clippy::nursery -D warnings'
 
 if type exa 2>&1 >/dev/null; then
   alias ls='exa'
