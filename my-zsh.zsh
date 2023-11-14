@@ -35,6 +35,7 @@ alias cp='cp -i'
 alias cpr='rsync --delete --archive --numeric-ids --human-readable --verbose --info=progress2'
 alias d='dirs -v | head -10'
 alias dev='git checkout develop'
+alias sand='git checkout sandbox'
 alias gd="echo main diff:; git diff --name-status main develop"
 alias gl="git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset'"
 alias h='history'
