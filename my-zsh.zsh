@@ -237,6 +237,17 @@ function slick_prompt_precmd() {
 
 function slick_prompt_preexec() {
     slick_prompt_timestamp=$EPOCHSECONDS
+
+    # Set cursor style (DECSCUSR), VT520.
+    # 0  ⇒  blinking block.
+    # 1  ⇒  blinking block (default).
+    # 2  ⇒  steady block.
+    # 3  ⇒  blinking underline.
+    # 4  ⇒  steady underline.
+    # 5  ⇒  blinking bar, xterm.
+    # 6  ⇒  steady bar, xterm.
+
+    echo -ne "\e[4 q";
 }
 
 export SLICK_PROMPT_GIT_REMOTE_BEHIND=""
