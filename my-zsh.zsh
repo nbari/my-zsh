@@ -11,74 +11,9 @@ export PAGER='less -R'
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 # ----------------------------------------------------------------------------
-# Aliases
+# Advanced Tab-completion
 # ----------------------------------------------------------------------------
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
-alias -g ......='../../../../..'
-alias 1='cd -'
-alias 2='cd -2'
-alias 3='cd -3'
-alias 4='cd -4'
-alias 5='cd -5'
-alias 6='cd -6'
-alias 7='cd -7'
-alias 8='cd -8'
-alias 9='cd -9'
-alias active='grep -Ev "^($|#)"'
-alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
-alias c='clear'
-alias connected='lsof -i | grep -E "(LISTEN|ESTABLISHED)"'
-alias cp='cp -i'
-alias cpr='rsync --delete --archive --numeric-ids --human-readable --verbose --info=progress2'
-alias d='dirs -v | head -10'
-alias dev='git checkout develop'
-alias sand='git checkout sandbox'
-alias gd="echo main diff:; git diff --name-status main develop"
-alias gl="git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset'"
-alias h='history'
-alias less='less -FSRX'
-alias listen='lsof -iTCP -sTCP:LISTEN -n -P'
-alias main='git checkout main'
-alias master='git checkout master'
-alias mv='mv -i'
-alias myip="dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short"
-alias path='echo -e ${PATH//:/\\n}'
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-alias pro='cd ~/projects'
-alias profile="cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l"
-alias rand='LC_ALL=C; cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
-alias rm='rm -i'
-alias ssh-tunnel='echo "ssh -C2qTnN -D 8080 (proxy) or -T -N -f -L 3307:db.tld:3307 host.tld"'
-alias ssh="TERM=xterm-256color ssh"
-alias t="tmux -2 attach -d || tmux -2 new"
-compdef t=tmux
-alias tl='tmux list-sessions'
-alias tmp='cd ~/tmp'
-alias up='git add . && git commit -a -m "sync `date`" && git push'
-alias up='git add . && git commit -am "sync $(date)" && git push'
-alias yk='gpg --card-status > /dev/null'
-alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
-
-if type exa 2>&1 >/dev/null; then
-  alias ls='exa'
-  alias l='exa -l --all --group-directories-first --git'
-  alias ll='exa -l --all --all --group-directories-first --git'
-  alias lt='exa --icons -T --git-ignore --level=2 --group-directories-first'
-  alias llt='exa --icons -lT --git-ignore --level=2 --group-directories-first'
-  alias lT='exa --icons -T --git-ignore --level=4 --group-directories-first'
-else
-  alias l='ls -lah'
-  alias ll='ls -alF'
-  alias la='ls -A'
-fi
-
-alias vi="nvim"
-alias vim="nvim"
-alias view="nvim -R"
-alias vimdiff="nvim -d"
+autoload -Uz compinit && compinit
 
 # ----------------------------------------------------------------------------
 # vim mode
@@ -99,11 +34,6 @@ bindkey -M vicmd 'k' up-line-or-beginning-search # Up
 bindkey -M vicmd 'j' down-line-or-beginning-search # Down
 
 # ----------------------------------------------------------------------------
-# use OS time
-# ----------------------------------------------------------------------------
-# disable -r time
-
-# ----------------------------------------------------------------------------
 # magic-space
 # ----------------------------------------------------------------------------
 bindkey " " magic-space # do history expansion on space !XX<space>
@@ -117,10 +47,6 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 
-# ----------------------------------------------------------------------------
-# Advanced Tab-completion
-# ----------------------------------------------------------------------------
-autoload -U compinit && compinit
 
 # ----------------------------------------------------------------------------
 # remove duplicates in the PATH
@@ -194,6 +120,81 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)[ 0-9:]#([
 zstyle ":completion:*:commands" rehash 1
 # ls colors
 zstyle ':completion:*' list-colors 'di=94:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+
+# ----------------------------------------------------------------------------
+# Aliases
+# ----------------------------------------------------------------------------
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
+alias active='grep -Ev "^($|#)"'
+alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
+alias c='clear'
+alias connected='lsof -i | grep -E "(LISTEN|ESTABLISHED)"'
+alias cp='cp -i'
+alias cpr='rsync --delete --archive --numeric-ids --human-readable --verbose --info=progress2'
+alias d='dirs -v | head -10'
+alias dev='git checkout develop'
+alias sand='git checkout sandbox'
+alias gd="echo main diff:; git diff --name-status main develop"
+alias gl="git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset'"
+alias h='history'
+alias less='less -FSRX'
+alias listen='lsof -iTCP -sTCP:LISTEN -n -P'
+alias main='git checkout main'
+alias master='git checkout master'
+alias mv='mv -i'
+alias myip="dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short"
+alias path='echo -e ${PATH//:/\\n}'
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+alias pro='cd ~/projects'
+alias profile="cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l"
+alias rand='LC_ALL=C; cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
+alias rm='rm -i'
+alias ssh-tunnel='echo "ssh -C2qTnN -D 8080 (proxy) or -T -N -f -L 3307:db.tld:3307 host.tld"'
+alias ssh="TERM=xterm-256color ssh"
+alias t="tmux -2 attach -d || tmux -2 new"
+compdef t=tmux
+alias tl='tmux list-sessions'
+alias tmp='cd ~/tmp'
+alias up='git add . && git commit -a -m "sync `date`" && git push'
+alias up='git add . && git commit -am "sync $(date)" && git push'
+alias yk='gpg --card-status > /dev/null'
+alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
+
+if type exa 2>&1 >/dev/null; then
+  alias ls='exa'
+  alias l='exa -l --all --group-directories-first --git'
+  alias ll='exa -l --all --all --group-directories-first --git'
+  alias lt='exa --icons -T --git-ignore --level=2 --group-directories-first'
+  alias llt='exa --icons -lT --git-ignore --level=2 --group-directories-first'
+  alias lT='exa --icons -T --git-ignore --level=4 --group-directories-first'
+else
+  alias l='ls -lah'
+  alias ll='ls -alF'
+  alias la='ls -A'
+fi
+
+alias vi="nvim"
+alias vim="nvim"
+alias view="nvim -R"
+alias vimdiff="nvim -d"
+
+# ----------------------------------------------------------------------------
+# use OS time
+# ----------------------------------------------------------------------------
+# disable -r time
 
 # ----------------------------------------------------------------------------
 # prompt slick
@@ -277,15 +278,6 @@ get_options() {
 
 get_akamai() {
     curl -I -L -H "Pragma: akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-extracted-values, akamai-x-get-nonces, akamai-x-get-ssl-client-session-id, akamai-x-get-true-cache-key, akamai-x-serial-no, akamai-x-get-request-id, akamai-x-request-trace, akamai-x--meta-trace, akama-xi-get-extracted-values" $1
-}
-
-set_env() {
-    if [ -r $PWD/.zsh_config ]; then
-        source $PWD/.zsh_config
-        print -P -- %F{2}Ok%f
-    else
-        print -P -- %F{9}No .zsh_config found%f
-    fi
 }
 
 curl_time() {
