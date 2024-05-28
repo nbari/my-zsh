@@ -8,7 +8,7 @@ export LC_ALL=en_US.UTF-8
 export LESSCHARSET=utf-8
 export LSCOLORS=Exfxcxdxbxegedabagacad
 export PAGER='less -R'
-export SSH_AUTH_SOCK=~/.1password/agent.sock
+export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
 
 # ----------------------------------------------------------------------------
 # Advanced Tab-completion
@@ -62,7 +62,6 @@ setopt pushdminus
 setopt pushdsilent
 setopt pushdtohome
 setopt pushd_ignore_dups
-unsetopt nomatch
 
 # ----------------------------------------------------------------------------
 # Command history configuration
@@ -159,7 +158,7 @@ alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias pro='cd ~/projects'
 alias profile="cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l"
-alias rand='LC_ALL=C; cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
+alias rand='LC_ALL=C cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
 alias rm='rm -i'
 alias ssh-tunnel='echo "ssh -C2qTnN -D 8080 (proxy) or -T -N -f -L 3307:db.tld:3307 host.tld"'
 alias ssh="TERM=xterm-256color ssh"
@@ -167,12 +166,11 @@ alias t="tmux -2 attach -d || tmux -2 new"
 compdef t=tmux
 alias tl='tmux list-sessions'
 alias tmp='cd ~/tmp'
-alias up='git add . && git commit -a -m "sync `date`" && git push'
 alias up='git add . && git commit -am "sync $(date)" && git push'
 alias yk='gpg --card-status > /dev/null'
 alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
 
-if type exa 2>&1 >/dev/null; then
+if command -v exa &>/dev/null; then
   alias ls='exa'
   alias l='exa -l --all --group-directories-first --git'
   alias ll='exa -l --all --all --group-directories-first --git'
@@ -295,9 +293,7 @@ curl_time() {
 # Kill all process that match $1
 # ----------------------------------------------------------------------------
 kill9() {
-    for pid in `ps aux | grep -v "grep" | grep "$@" | awk '{print $2}'`; do
-        kill -9 $pid && echo "Killed ${pid}"
-    done
+    pkill -9 -f "$1" && echo "Killed $(pgrep -f "$1")"
 }
 
 # ----------------------------------------------------------------------------
