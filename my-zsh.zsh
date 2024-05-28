@@ -352,8 +352,6 @@ fi
 # ----------------------------------------------------------------------------
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 export FZF_TMUX=1
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
 
 # ----------------------------------------------------------------------------
 # command history
