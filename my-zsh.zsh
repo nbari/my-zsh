@@ -170,13 +170,16 @@ alias up='git add . && git commit -am "sync $(date)" && git push'
 alias yk='gpg --card-status > /dev/null'
 alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
 
-if command -v exa &>/dev/null; then
-  alias ls='exa'
-  alias l='exa -l --all --group-directories-first --git'
-  alias ll='exa -l --all --all --group-directories-first --git'
-  alias lt='exa --icons -T --git-ignore --level=2 --group-directories-first'
-  alias llt='exa --icons -lT --git-ignore --level=2 --group-directories-first'
+if [[ -z $commands[eza] ]]; then
+  alias ls='eza'
+  alias l='eza -l --all --group-directories-first --git'
+  alias ll='eza -l --all --all --group-directories-first --git'
+  alias lt='eza --icons -T --git-ignore --level=2 --group-directories-first'
+  alias llt='eza --icons -lT --git-ignore --level=2 --group-directories-first'
   alias lT='exa --icons -T --git-ignore --level=4 --group-directories-first'
+  alias llm='eza -lbGF --git --sort=modified'  # long list, modified date sort
+  alias la='eza -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
+  alias lx='eza -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
 else
   alias l='ls -lah'
   alias ll='ls -alF'
