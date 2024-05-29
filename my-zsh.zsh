@@ -176,18 +176,16 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-if [[ -z $commands[eza] ]]; then
-    # use exa if eza not found
-    LS_CMD='exa'
-else
-    LS_CMD='eza'
-fi
 
-if [[ -z $commands[$LC_CMD] ]]; then
-    LC_CMD='ls'
+LS_CMD='ls'
+if [[ ! -z ${commands[eza]} ]]; then
+	LS_CMD='eza'
+elif [[ ! -z ${commands[exa]} ]]; then
+	LS_CMD='exa'
 fi
 
 echo "LS_CMD: $LS_CMD"
+
 
 # Define aliases using the determined command
 if [[ $LS_CMD == 'ls' ]]; then
