@@ -177,15 +177,15 @@ alias view="nvim -R"
 alias vimdiff="nvim -d"
 
 
+command_exists() {
+    command -v "$1" &> /dev/null
+}
 
-if (( ${+commands[exa]} )); then
-    echo "'exa' found"
+if command_exists exa; then
     LS_CMD='exa'
-elif (( ${+commands[eza]} )); then
-    echo "'eza' found"
+elif command_exists eza; then
     LS_CMD='eza'
 else
-    echo "no exa or eza found"
     LS_CMD='ls'
 fi
 
