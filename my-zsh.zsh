@@ -176,8 +176,8 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-if [[ -z $commands[exa] ]]; then
-    LS_CMD='exa'
+if [[ -z $commands[eza] ]]; then
+    LS_CMD='eza'
 else
     LS_CMD='exa'
 fi
