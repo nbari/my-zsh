@@ -170,36 +170,52 @@ alias up='git add . && git commit -am "sync $(date)" && git push'
 alias yk='gpg --card-status > /dev/null'
 alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
 
-# Determine the command to use (eza, exa, or ls)
-if [[ -n ${commands[eza]} ]]; then
-  LS_CMD='eza'
-elif [[ -n ${commands[exa]} ]]; then
-  LS_CMD='exa'
-else
-  LS_CMD='ls'
-fi
-
-# Define aliases using the determined command
-if [[ $LS_CMD == 'ls' ]]; then
-  alias l='ls -lah'
-  alias ll='ls -alF'
-  alias la='ls -A'
-else
-  alias ls="$LS_CMD"
-  alias l="$LS_CMD -l --all --group-directories-first --git"
-  alias ll="$LS_CMD -l --all --all --group-directories-first --git"
-  alias lt="$LS_CMD --icons -T --git-ignore --level=2 --group-directories-first"
-  alias llt="$LS_CMD --icons -lT --git-ignore --level=2 --group-directories-first"
-  alias lT="$LS_CMD --icons -T --git-ignore --level=4 --group-directories-first"
-  alias llm="$LS_CMD -lbGF --git --sort=modified"  # long list, modified date sort
-  alias la="$LS_CMD -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
-  alias lx="$LS_CMD -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
-fi
-
+# nvim
 alias vi="nvim"
 alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
+
+# Ensure the script runs in zsh
+if [[ -n $ZSH_VERSION ]]; then
+  echo "Running in zsh"
+
+  # Determine the command to use (eza, exa, or ls)
+  if [[ -n ${commands[eza]} ]]; then
+    echo "eza command found"
+    LS_CMD='eza'
+  elif [[ -n ${commands[exa]} ]]; then
+    echo "exa command found"
+    LS_CMD='exa'
+  else
+    echo "No eza or exa command found, defaulting to ls"
+    LS_CMD='ls'
+  fi
+
+  echo "LS_CMD: $LS_CMD"
+
+  # Define aliases using the determined command
+  if [[ $LS_CMD == 'ls' ]]; then
+    alias l='ls -lah'
+    alias ll='ls -alF'
+    alias la='ls -A'
+  else
+    alias ls="$LS_CMD"
+    alias l="$LS_CMD -l --all --group-directories-first --git"
+    alias ll="$LS_CMD -l --all --all --group-directories-first --git"
+    alias lt="$LS_CMD --icons -T --git-ignore --level=2 --group-directories-first"
+    alias llt="$LS_CMD --icons -lT --git-ignore --level=2 --group-directories-first"
+    alias lT="$LS_CMD --icons -T --git-ignore --level=4 --group-directories-first"
+    alias llm="$LS_CMD -lbGF --git --sort=modified"  # long list, modified date sort
+    alias la="$LS_CMD -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
+    alias lx="$LS_CMD -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
+  fi
+
+  echo "Aliases set."
+
+else
+  echo "This script requires zsh."
+fi
 
 # ----------------------------------------------------------------------------
 # use OS time
@@ -213,8 +229,6 @@ zle -N zle-keymap-select
 zle -N zle-line-init
 zmodload zsh/datetime
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd slick_prompt_precmd
-add-zsh-hook preexec slick_prompt_preexec
 
 typeset -g slick_prompt_data
 typeset -g slick_prompt_timestamp
@@ -261,9 +275,11 @@ function slick_prompt_preexec() {
     echo -ne "\e[4 q";
 }
 
+add-zsh-hook precmd slick_prompt_precmd
+add-zsh-hook preexec slick_prompt_preexec
+
 export SLICK_PROMPT_GIT_REMOTE_BEHIND=""
 export SLICK_PROMPT_GIT_REMOTE_AHEAD=""
-
 
 # ----------------------------------------------------------------------------
 # custom
