@@ -177,17 +177,15 @@ alias view="nvim -R"
 alias vimdiff="nvim -d"
 
 
-if [[ -z ${ZINIT[LS_COMMAND]} ]]; then
-    if (( ${+commands[exa]} )); then
-        ZINIT[LS_COMMAND]='exa'
-    elif (( ${+commands[eza]} )); then
-        ZINIT[LS_COMMAND]='eza'
-    else
-        ZINIT[LS_COMMAND]='ls'
-    fi
+if (( ${+commands[exa]} )); then
+    LS_COMMAND='exa'
+elif (( ${+commands[eza]} )); then
+    LS_COMMAND='eza'
+else
+    LS_COMMAND='ls'
 fi
 
-if [[ $ZINIT[LS_COMMAND] == 'ls' ]]; then
+if [[ LS_COMMAND == 'ls' ]]; then
     alias l='ls -lah'
     alias ll='ls -alF'
     alias la='ls -A'
