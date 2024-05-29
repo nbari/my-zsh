@@ -176,8 +176,6 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-
-
 if (( ${+commands[exa]} )); then
     LS_CMD='exa'
 elif (( ${+commands[eza]} )); then
@@ -186,7 +184,6 @@ else
     LS_CMD='ls'
 fi
 
-# Define aliases using the determined command
 if [[ $LS_CMD == 'ls' ]]; then
     alias l='ls -lah'
     alias ll='ls -alF'
