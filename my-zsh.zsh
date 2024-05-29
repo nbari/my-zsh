@@ -180,6 +180,8 @@ alias vimdiff="nvim -d"
 if [[ -n $ZSH_VERSION ]]; then
   echo "Running in zsh"
 
+  typeset -A commands
+
   # Determine the command to use (eza, exa, or ls)
   if [[ -n ${commands[eza]} ]]; then
     echo "eza command found"
