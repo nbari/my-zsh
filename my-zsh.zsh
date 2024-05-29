@@ -171,9 +171,9 @@ alias yk='gpg --card-status > /dev/null'
 alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
 
 # Determine the command to use (eza, exa, or ls)
-if [[ -n $commands[eza ] ]]; then
+if [[ -z $commands[eza] ]]; then
   LS_CMD='eza'
-elif [[ -n $commands[exa] ]]; then
+elif [[ -z $commands[exa] ]]; then
   LS_CMD='exa'
 else
   LS_CMD='ls'
