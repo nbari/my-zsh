@@ -184,7 +184,8 @@ elif (( ${+commands[eza]} )); then
     LS_COMMAND='eza'
     echo "eza"
 else
-    exit
+    echo ${commands}
+    sleep 10
     LS_COMMAND='ls'
 fi
 
