@@ -176,14 +176,10 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-# Determine the command to use (eza, exa, or ls)
-if hash eza &> /dev/null; then
-    LS_CMD='eza'
-elif hash exa &> /dev/null; then
+if [[ -z $commands[exa] ]]; then
     LS_CMD='exa'
 else
-    echo "No eza or exa command found, defaulting to ls"
-    LS_CMD='ls'
+    LS_CMD='exa'
 fi
 
 echo "LS_CMD: $LS_CMD"
