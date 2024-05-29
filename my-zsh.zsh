@@ -176,32 +176,24 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-# Ensure the script runs in zsh
-if [[ -n $ZSH_VERSION ]]; then
-  echo "Running in zsh"
-
-  typeset -A commands
-
-  # Determine the command to use (eza, exa, or ls)
-  if [[ -n ${commands[eza]} ]]; then
-    echo "eza command found"
+# Determine the command to use (eza, exa, or ls)
+if hash eza &> /dev/null; then
     LS_CMD='eza'
-  elif [[ -n ${commands[exa]} ]]; then
-    echo "exa command found"
+elif hash exa &> /dev/null; then
     LS_CMD='exa'
-  else
+else
     echo "No eza or exa command found, defaulting to ls"
     LS_CMD='ls'
-  fi
+fi
 
-  echo "LS_CMD: $LS_CMD"
+echo "LS_CMD: $LS_CMD"
 
-  # Define aliases using the determined command
-  if [[ $LS_CMD == 'ls' ]]; then
+# Define aliases using the determined command
+if [[ $LS_CMD == 'ls' ]]; then
     alias l='ls -lah'
     alias ll='ls -alF'
     alias la='ls -A'
-  else
+else
     alias ls="$LS_CMD"
     alias l="$LS_CMD -l --all --group-directories-first --git"
     alias ll="$LS_CMD -l --all --all --group-directories-first --git"
@@ -211,12 +203,6 @@ if [[ -n $ZSH_VERSION ]]; then
     alias llm="$LS_CMD -lbGF --git --sort=modified"  # long list, modified date sort
     alias la="$LS_CMD -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
     alias lx="$LS_CMD -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
-  fi
-
-  echo "Aliases set."
-
-else
-  echo "This script requires zsh."
 fi
 
 # ----------------------------------------------------------------------------
