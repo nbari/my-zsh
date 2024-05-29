@@ -177,11 +177,11 @@ alias view="nvim -R"
 alias vimdiff="nvim -d"
 
 
-LS_CMD='ls'
-if [[ ! -z ${commands[eza]} ]]; then
-	LS_CMD='eza'
-elif [[ ! -z ${commands[exa]} ]]; then
+LS_CMD='eza'
+if [[ -z ${commands[eza]} ]]; then
 	LS_CMD='exa'
+elif [[ -z ${commands[exa]} ]]; then
+	LS_CMD='ls'
 fi
 
 echo "LS_CMD: $LS_CMD"
