@@ -190,15 +190,15 @@ if [[ $LS_COMMAND == 'ls' ]]; then
     alias ll='ls -alF'
     alias la='ls -A'
 else
-    alias ls="$LS_CMD"
-    alias l="$LS_CMD -l --all --group-directories-first --git"
-    alias ll="$LS_CMD -l --all --all --group-directories-first --git"
-    alias lt="$LS_CMD --icons -T --git-ignore --level=2 --group-directories-first"
-    alias llt="$LS_CMD --icons -lT --git-ignore --level=2 --group-directories-first"
-    alias lT="$LS_CMD --icons -T --git-ignore --level=4 --group-directories-first"
-    alias llm="$LS_CMD -lbGF --git --sort=modified"  # long list, modified date sort
-    alias la="$LS_CMD -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
-    alias lx="$LS_CMD -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
+    alias ls="$LS_COMMAND"
+    alias l="$LS_COMMAND -l --all --group-directories-first --git"
+    alias ll="$LS_COMMAND -l --all --all --group-directories-first --git"
+    alias lt="$LS_COMMAND --icons -T --git-ignore --level=2 --group-directories-first"
+    alias llt="$LS_COMMAND --icons -lT --git-ignore --level=2 --group-directories-first"
+    alias lT="$LS_COMMAND --icons -T --git-ignore --level=4 --group-directories-first"
+    alias llm="$LS_COMMAND -lbGF --git --sort=modified"  # long list, modified date sort
+    alias la="$LS_COMMAND -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
+    alias lx="$LS_COMMAND -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
 fi
 
 # ----------------------------------------------------------------------------
