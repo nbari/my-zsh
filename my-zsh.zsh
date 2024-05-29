@@ -179,13 +179,14 @@ alias vimdiff="nvim -d"
 
 if (( ${+commands[exa]} )); then
     LS_COMMAND='exa'
+    echo "exa"
 elif (( ${+commands[eza]} )); then
     LS_COMMAND='eza'
+    echo "eza"
 else
+    exit
     LS_COMMAND='ls'
 fi
-
-export LS_COMMAND
 
 if [[ $LS_COMMAND == 'ls' ]]; then
     alias l='ls -lah'
