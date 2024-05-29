@@ -178,7 +178,7 @@ alias vimdiff="nvim -d"
 
 
 command_exists() {
-    command -v "$1" &> /dev/null
+    hash "$1" &> /dev/null
 }
 
 if command_exists exa; then
