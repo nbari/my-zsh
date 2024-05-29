@@ -182,8 +182,10 @@ command_exists() {
 }
 
 if command_exists exa; then
+    echo "exa exists"
     LS_CMD='exa'
 elif command_exists eza; then
+    echo "eza exists"
     LS_CMD='eza'
 else
     LS_CMD='ls'
