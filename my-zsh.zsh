@@ -185,7 +185,7 @@ else
     LS_COMMAND='ls'
 fi
 
-if [[ LS_COMMAND == 'ls' ]]; then
+if [[ $LS_COMMAND == 'ls' ]]; then
     alias l='ls -lah'
     alias ll='ls -alF'
     alias la='ls -A'
