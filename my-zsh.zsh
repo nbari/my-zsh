@@ -177,14 +177,19 @@ alias view="nvim -R"
 alias vimdiff="nvim -d"
 
 
-LS_CMD='ls'
+
 if (( ${+commands[exa]} )); then
+    echo "'exa' found"
     LS_CMD='exa'
 elif (( ${+commands[eza]} )); then
+    echo "'eza' found"
     LS_CMD='eza'
+else
+    echo "no exa or eza found"
+    LS_CMD='ls'
 fi
 
-echo $LS_CMD
+echo "LS_CMD: $LS_CMD"
 
 if [[ $LS_CMD == 'ls' ]]; then
     alias l='ls -lah'
