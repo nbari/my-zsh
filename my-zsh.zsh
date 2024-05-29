@@ -176,6 +176,7 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 if (( ${+commands[exa]} )); then
     LS_COMMAND='exa'
