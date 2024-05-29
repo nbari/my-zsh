@@ -170,20 +170,30 @@ alias up='git add . && git commit -am "sync $(date)" && git push'
 alias yk='gpg --card-status > /dev/null'
 alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
 
-if [[ -z $commands[exa] ]]; then
-  alias ls='exa'
-  alias l='exa -l --all --group-directories-first --git'
-  alias ll='exa -l --all --all --group-directories-first --git'
-  alias lt='exa --icons -T --git-ignore --level=2 --group-directories-first'
-  alias llt='exa --icons -lT --git-ignore --level=2 --group-directories-first'
-  alias lT='exa --icons -T --git-ignore --level=4 --group-directories-first'
-  alias llm='exa -lbGF --git --sort=modified'  # long list, modified date sort
-  alias la='exa -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
-  alias lx='exa -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
+# Determine the command to use (eza, exa, or ls)
+if command -v eza &> /dev/null; then
+  LS_CMD='eza'
+elif command -v exa &> /dev/null; then
+  LS_CMD='exa'
 else
+  LS_CMD='ls'
+fi
+
+# Define aliases using the determined command
+if [[ $LS_CMD == 'ls' ]]; then
   alias l='ls -lah'
   alias ll='ls -alF'
   alias la='ls -A'
+else
+  alias ls="$LS_CMD"
+  alias l="$LS_CMD -l --all --group-directories-first --git"
+  alias ll="$LS_CMD -l --all --all --group-directories-first --git"
+  alias lt="$LS_CMD --icons -T --git-ignore --level=2 --group-directories-first"
+  alias llt="$LS_CMD --icons -lT --git-ignore --level=2 --group-directories-first"
+  alias lT="$LS_CMD --icons -T --git-ignore --level=4 --group-directories-first"
+  alias llm="$LS_CMD -lbGF --git --sort=modified"  # long list, modified date sort
+  alias la="$LS_CMD -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
+  alias lx="$LS_CMD -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
 fi
 
 alias vi="nvim"
