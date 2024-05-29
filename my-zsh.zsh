@@ -176,11 +176,12 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-
 LS_CMD='eza'
 if [[ -z $commands[eza] ]]; then
 	LS_CMD='exa'
-elif [[ -z $commands[exa] ]]; then
+fi
+
+if [[ -z $commands[$LS_CMD] ]]; then
 	LS_CMD='ls'
 fi
 
