@@ -177,23 +177,17 @@ alias view="nvim -R"
 alias vimdiff="nvim -d"
 
 
-command_exists() {
-    command -v "$1"
-}
-
-if command_exists exa; then
-    echo "exa exists"
-    LS_CMD='exa'
-elif command_exists eza; then
-    echo "eza exists"
-    LS_CMD='eza'
-else
-    LS_CMD='ls'
+if [[ -z ${ZINIT[LS_COMMAND]} ]]; then
+    if (( ${+commands[exa]} )); then
+        ZINIT[LS_COMMAND]='exa'
+    elif (( ${+commands[eza]} )); then
+        ZINIT[LS_COMMAND]='eza'
+    else
+        ZINIT[LS_COMMAND]='ls'
+    fi
 fi
 
-echo "LS_CMD: $LS_CMD"
-
-if [[ $LS_CMD == 'ls' ]]; then
+if [[ $ZINIT[LS_COMMAND] == 'ls' ]]; then
     alias l='ls -lah'
     alias ll='ls -alF'
     alias la='ls -A'
