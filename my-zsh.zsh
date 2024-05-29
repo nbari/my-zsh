@@ -178,9 +178,9 @@ alias vimdiff="nvim -d"
 
 
 LS_CMD='eza'
-if [[ -z ${commands[eza]} ]]; then
+if [[ -z $commands[eza] ]]; then
 	LS_CMD='exa'
-elif [[ -z ${commands[exa]} ]]; then
+elif [[ -z $commands[exa] ]]; then
 	LS_CMD='ls'
 fi
 
