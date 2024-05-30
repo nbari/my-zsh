@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # variables
 # ----------------------------------------------------------------------------
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export CLICOLOR=1
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -10,6 +10,11 @@ export LESSCHARSET=utf-8
 export LSCOLORS=Exfxcxdxbxegedabagacad
 export PAGER='less -R'
 export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
+
+# ----------------------------------------------------------------------------
+# remove duplicates from PATH
+# ----------------------------------------------------------------------------
+typeset -U PATH
 
 # ----------------------------------------------------------------------------
 # Advanced Tab-completion
