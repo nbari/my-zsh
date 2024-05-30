@@ -14,9 +14,11 @@ export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
 # ----------------------------------------------------------------------------
 # remove duplicates from PATH
 # ----------------------------------------------------------------------------
+echo "path: $PATH"
+
 typeset -U PATH
 
-echo $PATH
+echo "path 2: $PATH"
 
 # ----------------------------------------------------------------------------
 # Advanced Tab-completion
