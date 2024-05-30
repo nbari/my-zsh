@@ -9,7 +9,10 @@ export LC_ALL=en_US.UTF-8
 export LESSCHARSET=utf-8
 export LSCOLORS=Exfxcxdxbxegedabagacad
 export PAGER='less -R'
+
+if [[ -e "$HOME/.1password/agent.sock" ]]; then
 export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
+fi
 
 # ----------------------------------------------------------------------------
 # Advanced Tab-completion
