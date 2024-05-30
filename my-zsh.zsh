@@ -150,8 +150,6 @@ alias master='git checkout master'
 alias mv='mv -i'
 alias myip="dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short"
 alias path='echo -e ${PATH//:/\\n}'
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
 alias pro='cd ~/projects'
 alias profile="cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l"
 alias rand='LC_ALL=C cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
