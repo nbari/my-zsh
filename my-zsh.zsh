@@ -1,6 +1,7 @@
 # ----------------------------------------------------------------------------
 # variables
 # ----------------------------------------------------------------------------
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export CLICOLOR=1
 export EDITOR=nvim
 export LANG=en_US.UTF-8
@@ -46,11 +47,6 @@ export KEYTIMEOUT=1
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
-
-# ----------------------------------------------------------------------------
-# remove duplicates in the PATH
-# ----------------------------------------------------------------------------
-typeset -U PATH
 
 # ----------------------------------------------------------------------------
 # shell options
@@ -176,7 +172,7 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 
 if (( ${+commands[exa]} )); then
     LS_COMMAND='exa'
@@ -359,3 +355,8 @@ export FZF_TMUX=1
 fh() {
     print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
+
+# ----------------------------------------------------------------------------
+# remove duplicates in the PATH
+# ----------------------------------------------------------------------------
+typeset -U PATH
