@@ -9,10 +9,18 @@ export LC_ALL=en_US.UTF-8
 export LESSCHARSET=utf-8
 export LSCOLORS=Exfxcxdxbxegedabagacad
 export PAGER='less -R'
+export EZA_COLORS="*README*=33"
 
 if [[ -e "$HOME/.1password/agent.sock" ]]; then
 export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
 fi
+
+# ----------------------------------------------------------------------------
+# ZSH_HIGHLIGHT_STYLES
+# ----------------------------------------------------------------------------,
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 # ----------------------------------------------------------------------------
 # Advanced Tab-completion
