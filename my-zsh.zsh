@@ -16,13 +16,6 @@ export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
 fi
 
 # ----------------------------------------------------------------------------
-# ZSH_HIGHLIGHT_STYLES
-# ----------------------------------------------------------------------------,
-(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-
-# ----------------------------------------------------------------------------
 # Advanced Tab-completion
 # ----------------------------------------------------------------------------
 autoload -Uz compinit && compinit
