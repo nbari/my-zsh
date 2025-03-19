@@ -314,9 +314,12 @@ export AUTOSSH_GATETIME=0
 export AUTOSSH_POLL=10
 export AUTOSSH_PORT=0
 s() {
-    [[ ! -z $1 ]] && autossh -M 0 -t $@ 'tmux -2 new -ADs $USER'
+    local host="$1"
+    shift  # Remove the first argument (host), keep the rest
+    [[ -n "$host" ]] && autossh -M 0 -t "$host" "$@" 'tmux -u new -ADs $USER'
 }
 compdef s=ssh
+zstyle ':completion:*:s:*' hosts $(awk '{print $1}' ~/.ssh/known_hosts | cut -d, -f1 | sort -u)
 
 m() {
     [[ ! -z $1 ]] && mosh $@ -- tmux -2 new -ADs $USER
