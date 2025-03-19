@@ -252,7 +252,7 @@ function slick_prompt_preexec() {
     # 5  ⇒  blinking bar, xterm.
     # 6  ⇒  steady bar, xterm.
 
-    echo -ne "\e[4 q";
+    echo -ne "\e[6 q";
 }
 
 typeset -g slick_prompt_data
