@@ -159,8 +159,8 @@ alias profile="cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l"
 alias rand='LC_ALL=C cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
 alias rm='rm -i'
 alias ssh-tunnel='echo "ssh -C2qTnN -D 8080 (proxy) or -T -N -f -L 3307:db.tld:3307 host.tld"'
-alias ssh="TERM=xterm-256color ssh"
-alias t="tmux -2 attach -d || tmux -2 new"
+# alias ssh="TERM=xterm-256color ssh"
+alias t="tmux -u attach -d || tmux -u new"
 compdef t=tmux
 alias tl='tmux list-sessions'
 alias tmp='cd ~/tmp'
