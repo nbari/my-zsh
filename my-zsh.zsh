@@ -313,11 +313,22 @@ kill9() {
 export AUTOSSH_GATETIME=0
 export AUTOSSH_POLL=10
 export AUTOSSH_PORT=0
+
 s() {
     local host="$1"
     shift  # Remove the first argument (host), keep the rest
-    [[ -n "$host" ]] && autossh -M 0 -t "$host" "$@" 'tmux -u new -ADs $USER'
+
+    # Copy local .tmux.conf if remote doesn't exist and local does
+    if [[ -f ~/.tmux-remote.conf ]]; then
+        if ! ssh -o ConnectTimeout=5 "$host" "$@" 'test -f ~/.tmux.conf' 2>/dev/null; then
+            echo "Copying .tmux.conf to remote host..."
+            scp ~/.tmux-remote.conf "$host":~/.tmux.conf
+        fi
+    fi
+
+    autossh -M 0 -t "$host" "$@" 'tmux -u new -ADs $USER'
 }
+
 compdef s=ssh
 
 m() {
