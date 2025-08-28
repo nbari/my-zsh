@@ -319,10 +319,10 @@ s() {
     shift  # Remove the first argument (host), keep the rest
 
     # Copy local .tmux.conf if remote doesn't exist and local does
-    if [[ -f ~/.tmux-remote.conf ]]; then
+    if [[ -f ~/.tmux.conf ]]; then
         if ! ssh -o ConnectTimeout=5 "$host" "$@" 'test -f ~/.tmux.conf' 2>/dev/null; then
             echo "Copying .tmux.conf to remote host..."
-            scp ~/.tmux-remote.conf "$host":~/.tmux.conf
+            scp ~/.tmux.conf "$host":~/.tmux.conf
         fi
     fi
 
