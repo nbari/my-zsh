@@ -316,6 +316,13 @@ export AUTOSSH_POLL=10
 export AUTOSSH_PORT=0
 
 s() {
+    # Check if host argument is provided
+    if [[ -z "$1" ]]; then
+        echo "Error: hostname required" >&2
+        echo "Usage: s <hostname> [additional ssh options]" >&2
+        return 1
+    fi
+
     local host="$1"
     shift  # Remove the first argument (host), keep the rest
 
