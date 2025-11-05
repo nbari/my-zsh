@@ -261,8 +261,9 @@ typeset -g slick_prompt_timestamp
 add-zsh-hook precmd slick_prompt_precmd
 add-zsh-hook preexec slick_prompt_preexec
 
-export SLICK_PROMPT_GIT_REMOTE_BEHIND=""
-export SLICK_PROMPT_GIT_REMOTE_AHEAD=""
+export SLICK_PROMPT_GIT_REMOTE_BEHIND=
+export SLICK_PROMPT_GIT_REMOTE_AHEAD=
+export SLICK_PROMPT_GIT_AUTH_SYMBOL=
 
 # ----------------------------------------------------------------------------
 # custom
