@@ -209,22 +209,47 @@ fi
 # ----------------------------------------------------------------------------
 # prompt slick
 # ----------------------------------------------------------------------------
+SLICK_PATH=$HOME/.cargo/bin/slick
+
+# Load required modules
+autoload -Uz add-zsh-hook
+zmodload zsh/datetime
+
+# Register hooks
+add-zsh-hook precmd slick_prompt_precmd
+add-zsh-hook preexec slick_prompt_preexec
+
+# Register zle widgets
 zle -N zle-keymap-select
 zle -N zle-line-init
-zmodload zsh/datetime
-autoload -Uz add-zsh-hook
 
-SLICK_PATH=$HOME/.cargo/bin/slick
+# Global variables
+typeset -g slick_prompt_data
+typeset -g slick_prompt_timestamp
 
 function slick_prompt_refresh {
     local exit_status=$?
-    read -r -u $1 slick_prompt_data
-    PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""} -t ${slick_prompt_timestamp:-$EPOCHSECONDS})
+    local line
+
+    # Read ONE line per callback (non-blocking!)
+    # ZSH will call this function again if there's more data
+    if read -r -u $1 line; then
+        slick_prompt_data="$line"
+
+        # Always pass timestamp if available (needed for ALL phases to show elapsed time!)
+        if [[ -n "$slick_prompt_timestamp" ]]; then
+            PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""} -t ${slick_prompt_timestamp:-$EPOCHSECONDS})
+        else
+            PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""})
+        fi
+
+        zle reset-prompt
+        return  # RETURN immediately - don't block! Handler will be called again for next line
+    fi
+
+    # No more data - close fd and remove handler
+    # Clean up timestamp now that all phases are complete
     unset slick_prompt_timestamp
-
-    zle reset-prompt
-
-    # Remove the handler and close the fd
     zle -F $1
     exec {1}<&-
 }
@@ -253,7 +278,7 @@ function slick_prompt_preexec() {
     # 5  ⇒  blinking bar, xterm.
     # 6  ⇒  steady bar, xterm.
 
-    # echo -ne "\e[4 q";
+    echo -ne "\e[4 q";
 }
 
 typeset -g slick_prompt_data
