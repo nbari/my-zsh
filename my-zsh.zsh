@@ -211,6 +211,10 @@ fi
 # ----------------------------------------------------------------------------
 SLICK_PATH=$HOME/.cargo/bin/slick
 
+export SLICK_PROMPT_GIT_REMOTE_BEHIND=
+export SLICK_PROMPT_GIT_REMOTE_AHEAD=
+export SLICK_PROMPT_GIT_AUTH_SYMBOL=
+
 # Load required modules
 autoload -Uz add-zsh-hook
 zmodload zsh/datetime
@@ -226,6 +230,7 @@ zle -N zle-line-init
 # Global variables
 typeset -g slick_prompt_data
 typeset -g slick_prompt_timestamp
+typeset -g slick_prompt_elapsed
 
 function slick_prompt_refresh {
     local exit_status=$?
@@ -236,9 +241,10 @@ function slick_prompt_refresh {
     if read -r -u $1 line; then
         slick_prompt_data="$line"
 
-        # Always pass timestamp if available (needed for ALL phases to show elapsed time!)
-        if [[ -n "$slick_prompt_timestamp" ]]; then
-            PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""} -t ${slick_prompt_timestamp:-$EPOCHSECONDS})
+        # Always pass elapsed time if available (needed for ALL phases to show consistent elapsed time!)
+        # Use the pre-calculated elapsed time from precmd to avoid flickering
+        if [[ -n "$slick_prompt_elapsed" ]]; then
+            PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""} -e $slick_prompt_elapsed)
         else
             PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""})
         fi
@@ -248,8 +254,9 @@ function slick_prompt_refresh {
     fi
 
     # No more data - close fd and remove handler
-    # Clean up timestamp now that all phases are complete
+    # Clean up timestamp and elapsed now that all phases are complete
     unset slick_prompt_timestamp
+    unset slick_prompt_elapsed
     zle -F $1
     exec {1}<&-
 }
@@ -261,6 +268,16 @@ function zle-line-init zle-keymap-select {
 
 function slick_prompt_precmd() {
     slick_prompt_data=""
+
+    # Calculate elapsed time ONCE here (avoids flickering across multiple render phases)
+    # If timestamp is set (command was run), calculate elapsed seconds
+    # Otherwise, leave it unset (no command was run, e.g., just pressed enter)
+    if [[ -n "$slick_prompt_timestamp" ]]; then
+        slick_prompt_elapsed=$(( $EPOCHSECONDS - $slick_prompt_timestamp ))
+    else
+        unset slick_prompt_elapsed
+    fi
+
     local fd
     exec {fd}< <($SLICK_PATH precmd)
     zle -F $fd slick_prompt_refresh
@@ -280,15 +297,6 @@ function slick_prompt_preexec() {
 
     echo -ne "\e[4 q";
 }
-
-typeset -g slick_prompt_data
-typeset -g slick_prompt_timestamp
-add-zsh-hook precmd slick_prompt_precmd
-add-zsh-hook preexec slick_prompt_preexec
-
-export SLICK_PROMPT_GIT_REMOTE_BEHIND=
-export SLICK_PROMPT_GIT_REMOTE_AHEAD=
-export SLICK_PROMPT_GIT_AUTH_SYMBOL=
 
 # ----------------------------------------------------------------------------
 # custom
