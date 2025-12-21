@@ -175,6 +175,9 @@ alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
 
+# no sleep
+# check with systemd-inhibit --list
+alias nosleep='systemd-inhibit --what=sleep --why="manual nosleep" bash'
 
 
 if (( ${+commands[exa]} )); then
