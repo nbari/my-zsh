@@ -416,6 +416,31 @@ fh() {
     print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
+codex() {
+  # Install/upgrade Codex CLI into ~/.local (no sudo)
+  npm i -g @openai/codex@latest --prefix "$HOME/.local" || return $?
+
+  # Run codex with whatever args you passed
+  command codex "$@"
+}
+
+copilot() {
+  # Install/upgrade GitHub Copilot CLI into ~/.local
+  npm install -g @github/copilot --prefix "$HOME/.local" || return $?
+
+  # Run Copilot with forwarded arguments
+  command copilot "$@"
+}
+
+gemini() {
+  # Install/upgrade Gemini CLI into ~/.local
+  npm install -g @google/gemini-cli --prefix "$HOME/.local" || return $?
+
+  # Run Gemini with forwarded arguments
+  command gemini "$@"
+}
+
+
 # ----------------------------------------------------------------------------
 # remove duplicates from PATH
 # ----------------------------------------------------------------------------
