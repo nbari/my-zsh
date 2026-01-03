@@ -165,7 +165,7 @@ alias t="tmux -u attach -d || tmux -u new"
 compdef t=tmux
 alias tl='tmux list-sessions'
 alias tmp='cd ~/tmp'
-alias up='git add . && git commit -am "sync $(date)" && git push'
+alias up='git add -A && git commit -m "sync $(date)" && git push'
 alias yk='gpg --card-status > /dev/null'
 alias clip='cargo clippy --all -- -W clippy::all -W clippy::pedantic -W clippy::nursery -D warnings'
 
