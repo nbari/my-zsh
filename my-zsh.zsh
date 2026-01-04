@@ -432,14 +432,17 @@ copilot() {
   command copilot "$@"
 }
 
-gemini() {
-  # Install/upgrade Gemini CLI into ~/.local
-  npm install -g @google/gemini-cli --prefix "$HOME/.local" || return $?
+mini() {
+  # 1. Handle Update Logic
+  if [[ "$1" == "--update" ]]; then
+    echo "📦 Checking for Gemini CLI updates..."
+    npm install -g @google/gemini-cli --prefix "$HOME/.local"
+    shift # Removes '--update' from the arguments list
+  fi
 
-  # Run Gemini with forwarded arguments
-  command gemini "$@"
+  # 2. Run Gemini with the context file (scoped only to this command)
+  GEMINI_SYSTEM_MD="AGENTS.md" "$HOME/.local/bin/gemini" "$@"
 }
-
 
 # ----------------------------------------------------------------------------
 # remove duplicates from PATH
