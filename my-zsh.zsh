@@ -440,8 +440,16 @@ mini() {
     shift # Removes '--update' from the arguments list
   fi
 
-  # 2. Run Gemini with the context file (scoped only to this command)
-  GEMINI_SYSTEM_MD="AGENTS.md" "$HOME/.local/bin/gemini" "$@"
+  # Define the binary path to avoid repetition
+  local bin_path="$HOME/.local/bin/gemini"
+
+  # 2. Run Gemini (Conditionally include context file)
+  if [[ -f "AGENTS.md" ]]; then
+    echo "✨ Context loaded: AGENTS.md"
+    GEMINI_SYSTEM_MD="AGENTS.md" "$bin_path" "$@"
+  else
+    "$bin_path" "$@"
+  fi
 }
 
 # ----------------------------------------------------------------------------
