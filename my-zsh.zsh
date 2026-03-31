@@ -212,7 +212,11 @@ fi
 # ----------------------------------------------------------------------------
 # prompt slick
 # ----------------------------------------------------------------------------
-SLICK_PATH=$HOME/.cargo/bin/slick
+if command -v slick &> /dev/null; then
+    SLICK_PATH=$(command -v slick)
+else
+    SLICK_PATH=$HOME/.cargo/bin/slick
+fi
 
 export SLICK_PROMPT_GIT_REMOTE_BEHIND=
 export SLICK_PROMPT_GIT_REMOTE_AHEAD=
