@@ -13,7 +13,11 @@ export PAGER='less -R'
 export EZA_COLORS="*README*=33"
 
 if [[ -e "$HOME/.1password/agent.sock" ]]; then
-export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
+    export SSH_AUTH_SOCK=$HOME/.1password/agent.sock
+fi
+
+if [[ ! -o interactive ]]; then
+    return 0 2>/dev/null || exit 0
 fi
 
 # ----------------------------------------------------------------------------
@@ -137,7 +141,11 @@ alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
 alias active='grep -Ev "^($|#)"'
-alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
+if (( ${+commands[upower]} )); then
+    alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
+elif (( ${+commands[pmset]} )); then
+    alias b='pmset -g batt'
+fi
 alias c='clear'
 alias connected='lsof -i | grep -E "(LISTEN|ESTABLISHED)"'
 alias cp='cp -i'
@@ -156,7 +164,11 @@ alias mv='mv -i'
 alias myip="dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short"
 alias path='echo -e ${PATH//:/\\n}'
 alias pro='cd ~/projects'
-alias profile="cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l"
+if (( ${+commands[powerprofilesctl]} )); then
+    alias profile='powerprofilesctl get; echo performance balanced power-saver'
+elif [[ -r /sys/firmware/acpi/platform_profile ]]; then
+    alias profile='cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l'
+fi
 alias rand='LC_ALL=C cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
 alias rm='rm -i'
 alias ssh-tunnel='echo "ssh -C2qTnN -D 8080 (proxy) or -T -N -f -L 3307:db.tld:3307 host.tld"'
@@ -177,7 +189,11 @@ alias vimdiff="nvim -d"
 
 # no sleep
 # check with systemd-inhibit --list
-alias nosleep='systemd-inhibit --what=sleep --why="manual nosleep" bash'
+if (( ${+commands[systemd-inhibit]} )); then
+    alias nosleep='systemd-inhibit --what=sleep --why="manual nosleep" bash'
+elif (( ${+commands[caffeinate]} )); then
+    alias nosleep='caffeinate -dimsu'
+fi
 
 
 if (( ${+commands[exa]} )); then
@@ -212,118 +228,11 @@ fi
 # ----------------------------------------------------------------------------
 # prompt slick
 # ----------------------------------------------------------------------------
-if command -v slick &> /dev/null; then
-    SLICK_PATH=$(command -v slick)
-else
-    SLICK_PATH=$HOME/.cargo/bin/slick
-fi
-
 export SLICK_PROMPT_GIT_REMOTE_BEHIND=
 export SLICK_PROMPT_GIT_REMOTE_AHEAD=
 export SLICK_PROMPT_GIT_AUTH_SYMBOL=
+# Load slick separately, for example via: zinit light nbari/slick
 
-# Load required modules
-autoload -Uz add-zsh-hook
-zmodload zsh/datetime
-
-# Register hooks
-add-zsh-hook precmd slick_prompt_precmd
-add-zsh-hook preexec slick_prompt_preexec
-
-# Register zle widgets
-zle -N zle-keymap-select
-zle -N zle-line-init
-
-# Global variables
-typeset -g slick_prompt_data
-typeset -g slick_prompt_fd
-typeset -g slick_prompt_timestamp
-typeset -g slick_prompt_elapsed
-
-function slick_prompt_refresh {
-    local exit_status=$?
-    local line
-
-    # Read ONE line per callback (non-blocking!)
-    # ZSH will call this function again if there's more data
-    if read -r -u $1 line; then
-        slick_prompt_data="$line"
-
-        # Always pass elapsed time if available (needed for ALL phases to show consistent elapsed time!)
-        # Use the pre-calculated elapsed time from precmd to avoid flickering
-        if [[ -n "$slick_prompt_elapsed" ]]; then
-            PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""} -e $slick_prompt_elapsed)
-        else
-            PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -r $exit_status -d ${slick_prompt_data:-""})
-        fi
-
-        zle && zle reset-prompt
-        return  # RETURN immediately - don't block! Handler will be called again for next line
-    fi
-
-    # No more data - close fd and remove handler
-    # Clean up timestamp and elapsed now that all phases are complete
-    unset slick_prompt_timestamp
-    unset slick_prompt_elapsed
-    zle -F $1
-    exec {1}<&-
-
-    # Reset global fd if it matches
-    if [[ "$1" == "$slick_prompt_fd" ]]; then
-        unset slick_prompt_fd
-    fi
-
-}
-
-function zle-line-init zle-keymap-select {
-    PROMPT=$($SLICK_PATH prompt -k "$KEYMAP" -d ${slick_prompt_data:-""})
-    zle && zle reset-prompt
-}
-
-function slick_prompt_precmd() {
-    slick_prompt_data=""
-
-    # Clean up any lingering fd from previous prompt
-    if [[ -n "$slick_prompt_fd" ]]; then
-        zle -F $slick_prompt_fd
-        exec {slick_prompt_fd}<&-
-        unset slick_prompt_fd
-    fi
-
-    # Calculate elapsed time ONCE here (avoids flickering across multiple render phases)
-    # If timestamp is set (command was run), calculate elapsed seconds
-    # Otherwise, leave it unset (no command was run, e.g., just pressed enter)
-    if [[ -n "$slick_prompt_timestamp" ]]; then
-        slick_prompt_elapsed=$(( $EPOCHSECONDS - $slick_prompt_timestamp ))
-    else
-        unset slick_prompt_elapsed
-    fi
-
-    exec {slick_prompt_fd}< <($SLICK_PATH precmd)
-    zle -F $slick_prompt_fd slick_prompt_refresh
-}
-
-function slick_prompt_preexec() {
-    # Kill any running async prompt immediately so it doesn't mess up command output
-    if [[ -n "$slick_prompt_fd" ]]; then
-        zle -F $slick_prompt_fd
-        exec {slick_prompt_fd}<&-
-        unset slick_prompt_fd
-    fi
-
-    slick_prompt_timestamp=$EPOCHSECONDS
-
-    # Set cursor style (DECSCUSR), VT520.
-    # 0  ⇒  blinking block.
-    # 1  ⇒  blinking block (default).
-    # 2  ⇒  steady block.
-    # 3  ⇒  blinking underline.
-    # 4  ⇒  steady underline.
-    # 5  ⇒  blinking bar, xterm.
-    # 6  ⇒  steady bar, xterm.
-
-    echo -ne "\e[4 q";
-}
 
 # ----------------------------------------------------------------------------
 # custom
@@ -331,7 +240,11 @@ function slick_prompt_preexec() {
 
 # get PID/PGID/PPID/SID to certain process or pid:
 pgid() {
-    ps -ejf | egrep "STIME | $1" | grep -v egrep
+    if ps -ejf >/dev/null 2>&1; then
+        ps -ejf | egrep "STIME | $1" | grep -v egrep
+    else
+        ps -Ao pid,pgid,ppid,sess,command | awk -v pattern="$1" 'NR == 1 || $0 ~ pattern'
+    fi
 }
 
 get_headers_GET() {
