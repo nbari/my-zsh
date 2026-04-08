@@ -1,7 +1,6 @@
 # ----------------------------------------------------------------------------
 # variables
 # ----------------------------------------------------------------------------
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export CLICOLOR=1
 export EDITOR=nvim
 export PSQL_EDITOR=nvim
@@ -317,9 +316,42 @@ m() {
     [[ ! -z $1 ]] && mosh $@ -- tmux -2 new -ADs $USER
 }
 
+ips() {
+    [[ -n "$1" ]] || return 1
+
+    if command -v dig >/dev/null 2>&1; then
+        { dig +short "$1" A; dig +short "$1" AAAA; } 2>/dev/null | awk '/^[0-9A-Fa-f:.]+$/'
+    else
+        host "$1" 2>/dev/null | awk '/ has address /{print $NF} / has IPv6 address /{print $NF}'
+    fi
+}
+
 # multiple tmux windows
 ms() {
-    [[ ! -z $1 ]] && tmux new-window; while read line; do (tmux split-window -h "autossh -M0 $line $2"; tmux select-layout tiled); done< <(awk '{print $NF}' <(host $1); tmux kill-pane -t0)
+    [[ -n "$1" ]] || { echo "Usage: ms <hostname> [autossh options]" >&2; return 1; }
+
+    local target="$1"
+    shift
+    local -a hosts ssh_args
+    local window_id pane_id host cmd
+    ssh_args=("$@")
+
+    hosts=(${(f)"$(ips "$target")"})
+    typeset -U hosts
+    (( ${#hosts} )) || { echo "Error: no addresses found for ${target}" >&2; return 1; }
+
+    window_id=$(tmux new-window -d -P -F "#{window_id}" -n "ms:${target}") || return
+    pane_id=$(tmux display-message -p -t "$window_id" "#{pane_id}") || return
+
+    for host in "${hosts[@]}"; do
+        cmd="autossh -M 0 ${(j: :)${(@q)ssh_args}} ${(q)host}"
+        tmux send-keys -t "$pane_id" "$cmd" C-m || return
+        pane_id=$(tmux split-window -d -P -F "#{pane_id}" -t "$window_id" -h) || return
+        tmux select-layout -t "$window_id" tiled >/dev/null
+    done
+
+    tmux kill-pane -t "$pane_id" >/dev/null 2>&1
+    tmux select-window -t "$window_id"
 }
 
 # ----------------------------------------------------------------------------
@@ -388,8 +420,3 @@ mini() {
     "$bin_path" "$@"
   fi
 }
-
-# ----------------------------------------------------------------------------
-# remove duplicates from PATH
-# ----------------------------------------------------------------------------
-typeset -U PATH
