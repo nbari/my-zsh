@@ -66,6 +66,7 @@ setopt pushdminus
 setopt pushdsilent
 setopt pushdtohome
 setopt pushd_ignore_dups
+setopt NUMERIC_GLOB_SORT
 
 # ----------------------------------------------------------------------------
 # Command history configuration
