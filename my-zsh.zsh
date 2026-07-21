@@ -142,7 +142,7 @@ alias 8='cd -8'
 alias 9='cd -9'
 alias active='grep -Ev "^($|#)"'
 if (( ${+commands[upower]} )); then
-    alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /percentage/{print \$2}'"
+    alias b="upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '\$1 ~ /^state/{s=\$2} \$1 ~ /^percentage/{p=\$2} END{printf \"%s %s\", p, s}'; [ -r /sys/class/power_supply/BAT0/charge_control_end_threshold ] && printf ' (limit %s%%)' \"\$(< /sys/class/power_supply/BAT0/charge_control_end_threshold)\"; echo"
 elif (( ${+commands[pmset]} )); then
     alias b='pmset -g batt'
 fi
