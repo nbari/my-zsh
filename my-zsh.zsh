@@ -156,7 +156,6 @@ alias d='dirs -v | head -10'
 alias dev='git checkout develop'
 alias sand='git checkout sandbox'
 alias gd="echo main diff:; git diff --name-status main develop"
-alias gl="git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset'"
 alias h='history'
 alias less='less -FSRX'
 alias listen='lsof -iTCP -sTCP:LISTEN -n -P'
@@ -221,6 +220,29 @@ else
     alias la="$LS_COMMAND -lbhHigUmuSa --time-style=long-iso --git --color-scale"  # all list
     alias lx="$LS_COMMAND -lbhHigUmuSa@ --time-style=long-iso --git --color-scale" # all + extended list
 fi
+
+# ----------------------------------------------------------------------------
+# git log
+# ----------------------------------------------------------------------------
+gl() {
+    local -a args
+    local all_history=0 parsing_options=1
+    local arg
+
+    for arg in "$@"; do
+        if (( parsing_options )) && [[ "$arg" == -- ]]; then
+            parsing_options=0
+            args+=("$arg")
+        elif (( parsing_options )) && [[ "$arg" == -a ]]; then
+            all_history=1
+        else
+            args+=("$arg")
+        fi
+    done
+
+    (( all_history )) || args=(--since='1 week ago' "${args[@]}")
+    git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset' "${args[@]}"
+}
 
 # ----------------------------------------------------------------------------
 # use OS time
@@ -386,40 +408,4 @@ export FZF_TMUX=1
 # ----------------------------------------------------------------------------
 fh() {
     print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
-}
-
-codex() {
-  # Install/upgrade Codex CLI into ~/.local (no sudo)
-  npm i -g @openai/codex@latest --prefix "$HOME/.local" || return $?
-
-  # Run codex with whatever args you passed
-  command codex "$@"
-}
-
-copilot() {
-  # Install/upgrade GitHub Copilot CLI into ~/.local
-  npm install -g @github/copilot --prefix "$HOME/.local" || return $?
-
-  # Run Copilot with forwarded arguments
-  command copilot "$@"
-}
-
-mini() {
-  # 1. Handle Update Logic
-  if [[ "$1" == "--update" ]]; then
-    echo "📦 Checking for Gemini CLI updates..."
-    npm install -g @google/gemini-cli --prefix "$HOME/.local"
-    shift # Removes '--update' from the arguments list
-  fi
-
-  # Define the binary path to avoid repetition
-  local bin_path="$HOME/.local/bin/gemini"
-
-  # 2. Run Gemini (Conditionally include context file)
-  if [[ -f "AGENTS.md" ]]; then
-    echo "✨ Context loaded: AGENTS.md"
-    GEMINI_SYSTEM_MD="AGENTS.md" "$bin_path" "$@"
-  else
-    "$bin_path" "$@"
-  fi
 }
