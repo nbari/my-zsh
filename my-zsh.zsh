@@ -22,7 +22,9 @@ fi
 # ----------------------------------------------------------------------------
 # Advanced Tab-completion
 # ----------------------------------------------------------------------------
-autoload -Uz compinit && compinit
+# Skip if the interactive rc already initialised completions (avoids a second,
+# slower compinit run). Falls back to a full init when used standalone.
+(( $+functions[compdef] )) || { autoload -Uz compinit && compinit }
 
 # ----------------------------------------------------------------------------
 # vim mode
