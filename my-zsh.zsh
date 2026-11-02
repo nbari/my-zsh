@@ -241,7 +241,11 @@ gl() {
     done
 
     (( all_history )) || args=(--since='1 week ago' "${args[@]}")
-    git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset' "${args[@]}"
+    git log --decorate --decorate-refs=HEAD --decorate-refs=refs/heads/ --graph --oneline --branches --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset' "${args[@]}"
+}
+
+gla() {
+    gl --all --clear-decorations "$@"
 }
 
 # ----------------------------------------------------------------------------
