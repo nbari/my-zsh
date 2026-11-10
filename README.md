@@ -1,6 +1,8 @@
 # my-zsh
 my zsh dotfiles
 
+`pyclean` recursively removes Python `__pycache__` directories under the current directory.
+
 ## Git history
 
 - `gl`: local branch history with local branch and HEAD labels, from the last week.

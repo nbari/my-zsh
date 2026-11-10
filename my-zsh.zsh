@@ -170,6 +170,7 @@ if (( ${+commands[powerprofilesctl]} )); then
 elif [[ -r /sys/firmware/acpi/platform_profile ]]; then
     alias profile='cat /sys/firmware/acpi/platform_profile; echo fn + h,m,l'
 fi
+alias pyclean='find . -type d -name __pycache__ -prune -exec rm -rf -- {} +'
 alias rand='LC_ALL=C cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 16 | head -n 1'
 alias rm='rm -i'
 alias ssh-tunnel='echo "ssh -C2qTnN -D 8080 (proxy) or -T -N -f -L 3307:db.tld:3307 host.tld"'
